@@ -2,6 +2,7 @@
 /host
 /libs/build
 /libs/download
+/libs/fonts
 /wasm
 /tools/fortran.mk
 /tools/dragonegg/build

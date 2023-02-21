@@ -64,7 +64,7 @@ WASM_LIBS += $(PIXMAN_WASM_LIB)
 WASM_LIBS += $(XZ_WASM_LIB)
 WASM_LIBS += $(ZLIB_WASM_LIB)
 
-all: $(WASM_LIBS)
+all: $(WASM_LIBS) $(WASM)/usr/share/fonts
 
 .PHONY: cairo
 cairo: $(CAIRO_WASM_LIB)
@@ -254,6 +254,36 @@ $(ZLIB_WASM_LIB): $(ZLIB_TARBALL)
 	    --prefix=$(WASM) && \
 	  emmake make install AR="emar" ARFLAGS="ur"
 	touch $@
+
+.PHONY: fonts
+fonts: $(WASM)/usr/share/fonts
+
+$(WASM)/usr/share/fonts:
+	mkdir -p fonts
+	wget -O fonts/Roboto.zip https://fonts.google.com/download?family=Roboto
+	unzip -p fonts/Roboto.zip Roboto-Regular.ttf > fonts/Roboto-Regular.ttf
+	unzip -p fonts/Roboto.zip Roboto-Bold.ttf > fonts/Roboto-Bold.ttf
+	unzip -p fonts/Roboto.zip Roboto-Italic.ttf > fonts/Roboto-Italic.ttf
+	unzip -p fonts/Roboto.zip Roboto-BoldItalic.ttf > fonts/Roboto-BoldItalic.ttf
+	rm fonts/Roboto.zip
+	wget -O fonts/RobotoMono.zip https://fonts.google.com/download?family=Roboto%20Mono
+	unzip -p fonts/RobotoMono.zip static/RobotoMono-Regular.ttf > fonts/RobotoMono-Regular.ttf
+	unzip -p fonts/RobotoMono.zip static/RobotoMono-Bold.ttf > fonts/RobotoMono-Bold.ttf
+	unzip -p fonts/RobotoMono.zip static/RobotoMono-Italic.ttf > fonts/RobotoMono-Italic.ttf
+	unzip -p fonts/RobotoMono.zip static/RobotoMono-BoldItalic.ttf > fonts/RobotoMono-BoldItalic.ttf
+	rm fonts/RobotoMono.zip
+	wget -q -O fonts/RobotoSerif.zip https://fonts.google.com/download?family=Roboto%20Serif
+	unzip -p fonts/RobotoSerif.zip static/RobotoSerif/RobotoSerif-Regular.ttf > fonts/RobotoSerif-Regular.ttf
+	unzip -p fonts/RobotoSerif.zip static/RobotoSerif/RobotoSerif-Bold.ttf > fonts/RobotoSerif-Bold.ttf
+	unzip -p fonts/RobotoSerif.zip static/RobotoSerif/RobotoSerif-Italic.ttf > fonts/RobotoSerif-Italic.ttf
+	unzip -p fonts/RobotoSerif.zip static/RobotoSerif/RobotoSerif-BoldItalic.ttf > fonts/RobotoSerif-BoldItalic.ttf
+	rm fonts/RobotoSerif.zip
+	mkdir -p "$(WASM)/usr/share/fonts" "$(WASM)/etc/fonts/"
+	cp -r "fonts/." "$(WASM)/usr/share/fonts"
+	cp fonts.conf "$(WASM)/etc/fonts/local.conf"
+
+clean-fonts:
+	rm -rf fonts "$(WASM)/usr/share/fonts" "$(WASM)/etc/fonts/local.conf"
 
 .PHONY: clean
 clean:
