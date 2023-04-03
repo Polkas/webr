@@ -87,6 +87,7 @@ $(CAIRO_WASM_LIB): $(CAIRO_TARBALL) $(PIXMAN_WASM_LIB) $(FC_WASM_LIB)
 	  FREETYPE_LIBS="-sUSE_FREETYPE=1" \
 	  EM_PKG_CONFIG_PATH="$(WASM)/lib/pkgconfig" \
 	  emconfigure ../configure \
+	    ax_cv_c_float_words_bigendian=no \
 	    --enable-shared=no \
 	    --enable-static=yes \
 	    --enable-pthread=no \
