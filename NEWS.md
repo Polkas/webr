@@ -2,6 +2,8 @@
 
 # webR 0.1.1
 
+* Issue an output message of type `'closed'` when the webR communication channel closes.
+
 ## Breaking changes
  * Rename the properties of `WebROptions` so that they are all in camelCase, consistent with the rest of the webR TypeScript source. We have made the decision to release the above breaking change quickly while there are still a relatively low number of affected users.
 
